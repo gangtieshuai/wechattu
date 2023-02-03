@@ -7,7 +7,7 @@ ADD . /bot
 RUN npm config set registry https://registry.npm.taobao.org
 
 RUN jq 'del(.dependencies.wechaty)' package.json | sponge package.json \
-    && npm install \
+    && npm install --force \
     && sudo rm -fr /tmp/* ~/.npm
 
 
