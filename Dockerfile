@@ -1,16 +1,17 @@
 FROM wechaty/wechaty:next
 
-ONBUILD ARG NODE_ENV
-ONBUILD ENV NODE_ENV $NODE_ENV
+WORKDIR /bot
 
-ONBUILD WORKDIR /bot
+ADD . /bot
 
-ONBUILD COPY package.json .
-ONBUILD RUN jq 'del(.dependencies.wechaty)' package.json | sponge package.json \
+RUN npm config set registry https://registry.npm.taobao.org
+
+RUN jq 'del(.dependencies.wechaty)' package.json | sponge package.json \
     && npm install \
     && sudo rm -fr /tmp/* ~/.npm
-ONBUILD COPY . .
-ONBUILD RUN npm install -g pm2
+
+
+RUN npm install -g pm2
 
 EXPOSE 3002
 
