@@ -27,7 +27,7 @@ server.register(cors, {
   // put your options here
 })
 
-server.listen({ port: 3002 }, (error: any) => {
+server.listen({ host: '0.0.0.0' , port: 3002 }, (error: any) => {
   if (error) {
     console.error(error);
     // process.exit(1);
@@ -39,7 +39,7 @@ process.on('uncaughtException', (err) => {
 });
 
 
-server.get('/', async (req: any, res: any) => {
+server.get('/view', async (req: any, res: any) => {
   const jsonData: any = await fs.readFile('./message.json', 'utf-8', (err, data) => {
     if (err) {
       console.error(err);
@@ -80,50 +80,7 @@ server.get('/', async (req: any, res: any) => {
 });
 
 
-server.get('/right', async (req: any, res: any) => {
 
-  fs.readFile('./message.json', 'utf-8', (err, data) => {
-    if (err) {
-      console.error(err);
-      return;
-    }
-    const jsonData = JSON.parse(data)?JSON.parse(data):{};
-   const roomName= 'ces'
-   const Contact= 'roomName'
-   const Says= 'Hi'
-   const date= '2011-22-1'
-    console.log(jsonData);
-    const option = {
-      Room: 'ces',
-      Contact: 'roomName',
-      Says: 'Hi',
-      DateTime: '2011-22-1',
-    }
-    if (!jsonData[roomName]) {
-      jsonData[roomName] = {
-        [date]: [option]
-      }
-    } else {
-      const it = jsonData[roomName]
-      if (it[date]) {
-        it[date].push(option)
-      } else {
-        it[date] = [option]
-      }
-      jsonData[roomName] = it
-    }
-    console.log(jsonData);
-
-    fs.writeFile('./message.json', jsonData, err => {
-      if (err) {
-        // throw new Error('Error writing file', err)
-        console.log('Write File Error');
-      } else {
-        console.log('Write File ok');
-      }
-    });
-  });
-});
 
 function onScan(qrcode: string, status: ScanStatus) {
   if (status === ScanStatus.Waiting || status === ScanStatus.Timeout) {
